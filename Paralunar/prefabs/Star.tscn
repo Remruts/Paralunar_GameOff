@@ -1,0 +1,51 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://TitleScreen/title_stars.png" type="Texture" id=1]
+[ext_resource path="res://scripts/Star.gd" type="Script" id=2]
+
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 5, 5 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 1 )
+region = Rect2( 5, 0, 5, 5 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 1 )
+region = Rect2( 10, 0, 5, 5 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 1 )
+region = Rect2( 15, 0, 5, 5 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 5, 5 )
+
+[sub_resource type="SpriteFrames" id=9]
+animations = [ {
+"frames": [ SubResource( 4 ) ],
+"loop": false,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"loop": false,
+"name": "twink",
+"speed": 30.0
+} ]
+
+[node name="Star" type="AnimatedSprite"]
+position = Vector2( 32, 32 )
+frames = SubResource( 9 )
+animation = "twink"
+frame = 3
+playing = true
+script = ExtResource( 2 )
+
+[node name="TwinkTimer" type="Timer" parent="."]
+one_shot = true
+[connection signal="animation_finished" from="." to="." method="_on_Star_animation_finished"]
+[connection signal="timeout" from="TwinkTimer" to="." method="_on_TwinkTimer_timeout"]

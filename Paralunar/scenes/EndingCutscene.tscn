@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://prefabs/Camera.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/EndingCutscene.gd" type="Script" id=2]
+[ext_resource path="res://Ending/end_screen.png" type="Texture" id=3]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=12]
+
+[sub_resource type="Animation" id=1]
+resource_name = "pan_camera"
+length = 6.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 5, 6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 88 ), Vector2( 0, 208 ), Vector2( 0, 208 ) ]
+}
+
+[node name="EndingCutscene" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="EndCard" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+centered = false
+
+[node name="Camera2D" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, 208 )
+limit_right = 320
+limit_bottom = 180
+script = null
+
+[node name="UI" parent="." instance=ExtResource( 12 )]
+
+[node name="LifeContainer" parent="UI" index="0"]
+visible = false
+
+[node name="Gems" parent="UI" index="1"]
+visible = false
+
+[node name="CoinContainer" parent="UI" index="2"]
+visible = false
+
+[node name="GunIcon" parent="UI" index="3"]
+visible = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "pan_camera"
+anims/pan_camera = SubResource( 1 )
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+
+[editable path="Camera2D"]
+
+[editable path="UI"]

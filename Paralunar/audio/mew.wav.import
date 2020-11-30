@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/mew.wav-3a6fef25a84ba4bd5c27425228c3b92d.sample"
+
+[deps]
+
+source_file="res://audio/mew.wav"
+dest_files=[ "res://.import/mew.wav-3a6fef25a84ba4bd5c27425228c3b92d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

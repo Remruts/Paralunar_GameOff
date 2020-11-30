@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://prefabs/SpriteShadow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://sprites/witches.png" type="Texture" id=3]
+[ext_resource path="res://scripts/little_witch.gd" type="Script" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform vec4 new_color : hint_color = vec4(0.13, 0.0, 0.32, 0.75);
+//uniform vec2 offset = vec2(-3.0, 3.0);
+// + vec2(cos(TIME) * UV.x * UV.y, UV.y * UV.x * sin(TIME)) * SCREEN_PIXEL_SIZE * 10.0
+
+void fragment(){
+	vec4 col = textureLod(TEXTURE, UV, 1.0);
+	col.a *= new_color.a;
+	col.rgb *= col.a;
+	col.rgb = new_color.rgb;
+	COLOR = col;
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/new_color = Color( 0.129412, 0, 0.321569, 0.74902 )
+
+[node name="LittleWitch1" type="KinematicBody2D"]
+position = Vector2( 200, 104 )
+collision_layer = 64
+script = ExtResource( 4 )
+speed = Vector2( 50, -50 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+hframes = 3
+
+[node name="Shadow" parent="Sprite" instance=ExtResource( 1 )]
+material = SubResource( 3 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 0 )
+hframes = 3
+starting_position = Vector2( 2, 2 )

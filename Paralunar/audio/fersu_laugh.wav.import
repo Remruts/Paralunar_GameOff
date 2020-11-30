@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/fersu_laugh.wav-ed45afd61c97f6d529c58abb9cfdc842.sample"
+
+[deps]
+
+source_file="res://audio/fersu_laugh.wav"
+dest_files=[ "res://.import/fersu_laugh.wav-ed45afd61c97f6d529c58abb9cfdc842.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,101 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://sprites/coin.png" type="Texture" id=1]
+[ext_resource path="res://scripts/Coin.gd" type="Script" id=2]
+[ext_resource path="res://shaders/shadow_shader.tres" type="Material" id=3]
+
+[sub_resource type="PhysicsMaterial" id=1]
+friction = 0.1
+bounce = 0.75
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 8, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 16, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 1 )
+region = Rect2( 24, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 1 )
+region = Rect2( 32, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 1 )
+region = Rect2( 40, 0, 8, 8 )
+
+[sub_resource type="SpriteFrames" id=8]
+animations = [ {
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
+"loop": true,
+"name": "coin_spin",
+"speed": 15.0
+} ]
+
+[sub_resource type="CircleShape2D" id=9]
+radius = 4.0
+
+[sub_resource type="CircleShape2D" id=10]
+radius = 40.0
+
+[sub_resource type="CircleShape2D" id=11]
+radius = 4.0
+
+[node name="Coin" type="RigidBody2D"]
+position = Vector2( 40, 144 )
+collision_layer = 16
+mode = 2
+physics_material_override = SubResource( 1 )
+gravity_scale = 2.0
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 8 )
+animation = "coin_spin"
+frame = 3
+playing = true
+
+[node name="Shadow" type="AnimatedSprite" parent="AnimatedSprite"]
+material = ExtResource( 3 )
+position = Vector2( 2, 2 )
+z_index = -2
+z_as_relative = false
+frames = SubResource( 8 )
+animation = "coin_spin"
+frame = 2
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 9 )
+
+[node name="MagnetArea" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetArea"]
+modulate = Color( 0.901961, 0.976471, 0.00392157, 0.223529 )
+shape = SubResource( 10 )
+
+[node name="PickableArea" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 26
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickableArea"]
+shape = SubResource( 11 )
+
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 15.0
+one_shot = true
+autostart = true
+[connection signal="body_entered" from="MagnetArea" to="." method="_on_MagnetArea_body_entered"]
+[connection signal="body_exited" from="MagnetArea" to="." method="_on_MagnetArea_body_exited"]
+[connection signal="body_entered" from="PickableArea" to="." method="_on_PickableArea_body_entered"]
+[connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]

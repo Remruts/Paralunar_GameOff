@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/tut2.wav-7762fed2d5007dd5361e8f2bc7c0be90.sample"
+
+[deps]
+
+source_file="res://audio/tut2.wav"
+dest_files=[ "res://.import/tut2.wav-7762fed2d5007dd5361e8f2bc7c0be90.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

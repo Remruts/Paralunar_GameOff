@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://UI/tomato_life.png" type="Texture" id=1]
+[ext_resource path="res://prefabs/SpriteShadow.tscn" type="PackedScene" id=3]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec4 new_color : hint_color = vec4(0.13, 0.0, 0.32, 0.75);
+//uniform vec2 offset = vec2(-3.0, 3.0);
+// + vec2(cos(TIME) * UV.x * UV.y, UV.y * UV.x * sin(TIME)) * SCREEN_PIXEL_SIZE * 10.0
+
+void fragment(){
+	vec4 col = textureLod(TEXTURE, UV, 1.0);
+	col.a *= new_color.a;
+	col.rgb *= col.a;
+	col.rgb = new_color.rgb;
+	COLOR = col;
+}"
+custom_defines = ""
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/new_color = Color( 0.13, 0, 0.32, 0.75 )
+
+[node name="Life" type="Sprite"]
+texture = ExtResource( 1 )
+centered = false
+hframes = 4
+
+[node name="Shadow" parent="." instance=ExtResource( 3 )]
+material = SubResource( 2 )

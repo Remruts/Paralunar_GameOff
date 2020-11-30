@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/burst.wav-699beac7b66dece32e037248a6ea094f.sample"
+
+[deps]
+
+source_file="res://audio/burst.wav"
+dest_files=[ "res://.import/burst.wav-699beac7b66dece32e037248a6ea094f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

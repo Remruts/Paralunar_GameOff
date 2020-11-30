@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/morse.wav-5b3fc0c6441bf764266d05f78ab30038.sample"
+
+[deps]
+
+source_file="res://audio/morse.wav"
+dest_files=[ "res://.import/morse.wav-5b3fc0c6441bf764266d05f78ab30038.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

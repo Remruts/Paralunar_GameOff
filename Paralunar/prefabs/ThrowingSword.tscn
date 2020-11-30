@@ -1,0 +1,75 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://sprites/radu_sword.png" type="Texture" id=1]
+[ext_resource path="res://prefabs/BulletEffect2.tscn" type="PackedScene" id=2]
+[ext_resource path="res://prefabs/BulletEffect1.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/ThrowingSword.gd" type="Script" id=4]
+[ext_resource path="res://shaders/noise0.png" type="Texture" id=5]
+[ext_resource path="res://shaders/dissolve.shader" type="Shader" id=6]
+[ext_resource path="res://prefabs/SpriteShadow.tscn" type="PackedScene" id=7]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 2.0
+height = 8.0
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 6 )
+shader_param/new_color = Color( 0.92549, 0.0235294, 0.490196, 1 )
+shader_param/inner_color = Color( 0.313726, 0.0431373, 0.607843, 1 )
+shader_param/threshold = -0.2
+shader_param/noise_texture = ExtResource( 5 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "materialize"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:material:shader_param/threshold")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.7, -0.2 ]
+}
+
+[node name="ThrowingSword" type="KinematicBody2D" groups=[
+"EnemyBullet",
+]]
+position = Vector2( 888, -56 )
+collision_layer = 128
+collision_mask = 2
+script = ExtResource( 4 )
+effect1 = ExtResource( 3 )
+effect2 = ExtResource( 2 )
+spawn_sound = ""
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -1 )
+z_index = 1
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 2 )
+texture = ExtResource( 1 )
+
+[node name="Shadow" parent="Sprite" instance=ExtResource( 7 )]
+texture = ExtResource( 1 )
+offset = Vector2( 0, 0 )
+hframes = 1
+starting_position = Vector2( 2, 2 )
+
+[node name="FollowTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "materialize"
+anims/materialize = SubResource( 3 )
+[connection signal="timeout" from="FollowTimer" to="." method="_on_FollowTimer_timeout"]
+[connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]

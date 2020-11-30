@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/inazumakick.wav-d7b225c4393371c9b39c85ab3cbe2257.sample"
+
+[deps]
+
+source_file="res://audio/inazumakick.wav"
+dest_files=[ "res://.import/inazumakick.wav-d7b225c4393371c9b39c85ab3cbe2257.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

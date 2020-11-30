@@ -1,0 +1,405 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://prefabs/SpriteShadow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/BigDoor.gd" type="Script" id=2]
+[ext_resource path="res://sprites/door1.png" type="Texture" id=3]
+[ext_resource path="res://sprites/medallion.png" type="Texture" id=4]
+[ext_resource path="res://shaders/noise0.png" type="Texture" id=5]
+[ext_resource path="res://sprites/gems.png" type="Texture" id=6]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 24.0
+height = 16.0
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform vec4 new_color : hint_color = vec4(0.13, 0.0, 0.32, 0.75);
+uniform vec4 inner_color : hint_color = vec4(1.0);
+uniform float threshold = 0.5;
+uniform sampler2D noise_texture : hint_white;
+//uniform vec2 offset = vec2(-3.0, 3.0);
+// + vec2(cos(TIME) * UV.x * UV.y, UV.y * UV.x * sin(TIME)) * SCREEN_PIXEL_SIZE * 10.0
+
+void fragment(){
+	float thresh = threshold;// * (sin(TIME * 2.0)) / 2.0;
+	vec4 col = texture(TEXTURE, UV);
+	float noise = texture(noise_texture, 2.0 * vec2(UV.x, UV.y)).r;
+	
+	float moving_pos = UV.y * noise;
+	float noise_thresh = smoothstep(thresh - 0.05, thresh - 0.01, moving_pos);
+	float moving_pos2 = UV.y * noise + 0.01;
+	float glowing_part = smoothstep(thresh+0.2, thresh-0.1, moving_pos2);
+	float glowing_part2 = smoothstep(thresh+0.1, thresh-0.01, moving_pos2);
+	
+	col.a *= noise_thresh;
+	col.rgb *= col.a;
+	col.rgb = mix(col.rgb, new_color.rgb * 2.0, glowing_part);	
+	col.rgb = mix(col.rgb, inner_color.rgb, glowing_part2);
+	COLOR = col;
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/new_color = Color( 0.92549, 0.0235294, 0.490196, 1 )
+shader_param/inner_color = Color( 0.313726, 0.0431373, 0.607843, 1 )
+shader_param/threshold = -0.2
+shader_param/noise_texture = ExtResource( 5 )
+
+[sub_resource type="Shader" id=4]
+code = "shader_type canvas_item;
+
+uniform vec4 new_color : hint_color = vec4(0.13, 0.0, 0.32, 0.75);
+//uniform vec2 offset = vec2(-3.0, 3.0);
+// + vec2(cos(TIME) * UV.x * UV.y, UV.y * UV.x * sin(TIME)) * SCREEN_PIXEL_SIZE * 10.0
+
+void fragment(){
+	vec4 col = textureLod(TEXTURE, UV, 1.0);
+	col.a *= new_color.a;
+	col.rgb *= col.a;
+	col.rgb = new_color.rgb;
+	COLOR = col;
+}"
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+shader_param/new_color = Color( 0.13, 0, 0.32, 0.75 )
+
+[sub_resource type="CircleShape2D" id=6]
+radius = 16.0
+
+[sub_resource type="Animation" id=7]
+resource_name = "idle"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Medallion:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Medallion:material:shader_param/threshold")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ -0.2 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Medallion/Shadow:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Medallion/YellowGem:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Medallion/BlueGem:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Medallion/RedGem:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Medallion/YellowGem:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Medallion/BlueGem:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Medallion/RedGem:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "open"
+length = 1.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Medallion:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Medallion:material:shader_param/threshold")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -0.2, 1.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Medallion/Shadow:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "open"
+} ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Medallion/YellowGem:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Medallion/BlueGem:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Medallion/RedGem:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Medallion/YellowGem:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Medallion/BlueGem:modulate")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Medallion/RedGem:modulate")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[node name="BigDoor" type="Area2D"]
+position = Vector2( 480, 272 )
+z_index = -2
+z_as_relative = false
+collision_mask = 2
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 0, 8 )
+shape = SubResource( 1 )
+
+[node name="Medallion" type="Sprite" parent="."]
+material = SubResource( 3 )
+z_index = 1
+texture = ExtResource( 4 )
+
+[node name="YellowGem" type="Sprite" parent="Medallion"]
+visible = false
+position = Vector2( 0, 7 )
+texture = ExtResource( 6 )
+hframes = 3
+frame = 2
+
+[node name="BlueGem" type="Sprite" parent="Medallion"]
+visible = false
+position = Vector2( 6, -3 )
+texture = ExtResource( 6 )
+hframes = 3
+
+[node name="RedGem" type="Sprite" parent="Medallion"]
+visible = false
+position = Vector2( -6, -3 )
+texture = ExtResource( 6 )
+hframes = 3
+frame = 1
+
+[node name="Shadow" parent="Medallion" instance=ExtResource( 1 )]
+material = SubResource( 5 )
+texture = ExtResource( 4 )
+offset = Vector2( 0, 0 )
+hframes = 1
+starting_position = Vector2( 2, 2 )
+
+[node name="MedallionArea" type="Area2D" parent="Medallion"]
+visible = false
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Medallion/MedallionArea"]
+shape = SubResource( 6 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/idle = SubResource( 7 )
+anims/open = SubResource( 8 )
+[connection signal="body_entered" from="." to="." method="_on_BigDoor_body_entered"]
+[connection signal="body_entered" from="Medallion/MedallionArea" to="." method="_on_MedallionArea_body_entered"]

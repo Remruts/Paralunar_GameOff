@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/keyTake.wav-2741a036df2e9f085941c9f844e841b9.sample"
+
+[deps]
+
+source_file="res://audio/keyTake.wav"
+dest_files=[ "res://.import/keyTake.wav-2741a036df2e9f085941c9f844e841b9.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

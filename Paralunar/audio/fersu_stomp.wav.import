@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/fersu_stomp.wav-42155a2eb920abedeea749e359731dab.sample"
+
+[deps]
+
+source_file="res://audio/fersu_stomp.wav"
+dest_files=[ "res://.import/fersu_stomp.wav-42155a2eb920abedeea749e359731dab.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

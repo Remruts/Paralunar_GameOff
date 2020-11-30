@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/die_on_finish.gd" type="Script" id=1]
+[ext_resource path="res://sprites/hurt_effect_wip.png" type="Texture" id=2]
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ SubResource( 4 ), SubResource( 4 ), SubResource( 5 ), null ],
+"loop": true,
+"name": "explode",
+"speed": 20.0
+} ]
+
+[node name="HurtEffect" type="AnimatedSprite"]
+frames = SubResource( 3 )
+animation = "explode"
+script = ExtResource( 1 )
+[connection signal="animation_finished" from="." to="." method="_on_ExplosionEffect_animation_finished"]

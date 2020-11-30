@@ -1,0 +1,380 @@
+[gd_scene load_steps=25 format=2]
+
+[ext_resource path="res://prefabs/Camera.tscn" type="PackedScene" id=1]
+[ext_resource path="res://TitleScreen/paralunar_logo.png" type="Texture" id=2]
+[ext_resource path="res://TitleScreen/title_moon.png" type="Texture" id=3]
+[ext_resource path="res://TitleScreen/title_moon_face.png" type="Texture" id=4]
+[ext_resource path="res://TitleScreen/press_start.png" type="Texture" id=5]
+[ext_resource path="res://TitleScreen/title_ghost1.png" type="Texture" id=6]
+[ext_resource path="res://TitleScreen/title_ghost2.png" type="Texture" id=7]
+[ext_resource path="res://scripts/title_ghost.gd" type="Script" id=8]
+[ext_resource path="res://prefabs/StarField.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scripts/TitleMoon.gd" type="Script" id=10]
+[ext_resource path="res://scripts/TitleScreen.gd" type="Script" id=11]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=12]
+[ext_resource path="res://TitleScreen/selection_bar.png" type="Texture" id=13]
+[ext_resource path="res://TitleScreen/new_game.png" type="Texture" id=14]
+[ext_resource path="res://TitleScreen/continue.png" type="Texture" id=15]
+
+[sub_resource type="Animation" id=1]
+resource_name = "creepyface"
+length = 5.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("CreepyFace:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2.6, 5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0.180392 ), Color( 1, 1, 1, 0.392157 ), Color( 1, 1, 1, 0.180392 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "idle"
+length = 4.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 160, 72 ), Vector2( 160, 68 ), Vector2( 160, 72 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "idle"
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.6, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "pressed"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.2, 0.8 ), Vector2( 0.9, 3 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 45, 4 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 42, 4 )
+
+[sub_resource type="Animation" id=5]
+length = 1.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.5, 1, 1.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1.1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "transition"
+} ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/path = NodePath("PressStart:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ContinueText:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("NewGameText:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("SelectionBars:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "starting_menu"
+tracks/0/type = "value"
+tracks/0/path = NodePath("PressStart:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("SelectionBars/SelectionBarLeft:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("SelectionBars/SelectionBarLeft2:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("ContinueText:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("NewGameText:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("SelectionBars:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[node name="TitleScreen" type="Node2D"]
+script = ExtResource( 11 )
+next_scene = "scenes/StartingMoon.tscn"
+
+[node name="StarField" parent="." instance=ExtResource( 9 )]
+
+[node name="Camera2D" parent="." instance=ExtResource( 1 )]
+limit_right = 320
+limit_bottom = 180
+
+[node name="Moon" type="Sprite" parent="."]
+position = Vector2( 160, 88 )
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 3 )
+script = ExtResource( 10 )
+
+[node name="CreepyFace" type="Sprite" parent="Moon"]
+modulate = Color( 1, 1, 1, 0.180392 )
+texture = ExtResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Moon"]
+autoplay = "creepyface"
+anims/creepyface = SubResource( 1 )
+
+[node name="Title" type="Sprite" parent="."]
+position = Vector2( 160, 68.5838 )
+texture = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Title"]
+autoplay = "idle"
+anims/idle = SubResource( 2 )
+
+[node name="PressStart" type="Sprite" parent="."]
+visible = false
+position = Vector2( 160, 152 )
+texture = ExtResource( 5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PressStart"]
+autoplay = "idle"
+anims/idle = SubResource( 3 )
+anims/pressed = SubResource( 4 )
+
+[node name="NewGameText" type="Area2D" parent="."]
+position = Vector2( 159, 139.5 )
+collision_layer = 131072
+collision_mask = 131072
+
+[node name="NewGameSprite" type="Sprite" parent="NewGameText"]
+texture = ExtResource( 14 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NewGameText"]
+shape = SubResource( 8 )
+
+[node name="ContinueText" type="Area2D" parent="."]
+position = Vector2( 160, 155 )
+collision_layer = 131072
+collision_mask = 131072
+
+[node name="ContinueSprite" type="Sprite" parent="ContinueText"]
+position = Vector2( -1, 0.5 )
+texture = ExtResource( 15 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContinueText"]
+shape = SubResource( 9 )
+
+[node name="SelectionBars" type="Node2D" parent="."]
+position = Vector2( 160, 155 )
+
+[node name="SelectionBarLeft" type="Sprite" parent="SelectionBars"]
+position = Vector2( -52.5, 1 )
+texture = ExtResource( 13 )
+
+[node name="SelectionBarLeft2" type="Sprite" parent="SelectionBars"]
+position = Vector2( 52.5, 1 )
+texture = ExtResource( 13 )
+
+[node name="Ghost1" type="Sprite" parent="."]
+position = Vector2( 40, 144 )
+texture = ExtResource( 6 )
+script = ExtResource( 8 )
+
+[node name="Ghost2" type="Sprite" parent="."]
+position = Vector2( 280, 144 )
+texture = ExtResource( 7 )
+script = ExtResource( 8 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/fadeOut = SubResource( 5 )
+anims/idle = SubResource( 6 )
+anims/starting_menu = SubResource( 7 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 320.0
+margin_bottom = 180.0
+color = Color( 0, 0, 0, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UI" parent="." instance=ExtResource( 12 )]
+
+[node name="LifeContainer" parent="UI" index="0"]
+visible = false
+
+[node name="Gems" parent="UI" index="1"]
+visible = false
+
+[node name="CoinContainer" parent="UI" index="2"]
+visible = false
+
+[node name="GunIcon" parent="UI" index="3"]
+visible = false
+
+[node name="BossBar" parent="UI" index="8"]
+visible = false
+[connection signal="area_entered" from="NewGameText" to="." method="_on_NewGameText_area_entered"]
+[connection signal="area_entered" from="ContinueText" to="." method="_on_ContinueText_area_entered"]
+
+[editable path="Camera2D"]
+
+[editable path="UI"]

@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://sprites/splatter.png" type="Texture" id=1]
+[ext_resource path="res://scripts/Splatter.gd" type="Script" id=3]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+//render_mode unshaded, blend_add;
+
+uniform vec4 blink_color : hint_color;
+
+void fragment(){
+	vec4 col = texture(TEXTURE, UV);	
+	vec4 blink_stuff = blink_color;	
+	blink_stuff.a = col.a;
+	blink_stuff.rgb *= col.a;
+		
+	COLOR = blink_stuff;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/blink_color = Color( 1, 0, 0.501961, 1 )
+
+[node name="Splatter" type="Sprite"]
+material = SubResource( 2 )
+z_index = -5
+texture = ExtResource( 1 )
+vframes = 2
+hframes = 5
+script = ExtResource( 3 )

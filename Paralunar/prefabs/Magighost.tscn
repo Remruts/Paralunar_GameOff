@@ -1,0 +1,180 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://prefabs/SpriteShadow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://shaders/enemy_shader.shader" type="Shader" id=3]
+[ext_resource path="res://scripts/Magighost.gd" type="Script" id=4]
+[ext_resource path="res://sprites/magighost_sprites.png" type="Texture" id=5]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 3 )
+shader_param/blink_color = Color( 1, 0, 0.501961, 1 )
+shader_param/blink_magnitude = 0.0
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform vec4 new_color : hint_color = vec4(0.13, 0.0, 0.32, 0.75);
+//uniform vec2 offset = vec2(-3.0, 3.0);
+// + vec2(cos(TIME) * UV.x * UV.y, UV.y * UV.x * sin(TIME)) * SCREEN_PIXEL_SIZE * 10.0
+
+void fragment(){
+	vec4 col = textureLod(TEXTURE, UV, 1.0);
+	col.a *= new_color.a;
+	col.rgb *= col.a;
+	col.rgb = new_color.rgb;
+	COLOR = col;
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/new_color = Color( 0.13, 0, 0.32, 0.75 )
+
+[sub_resource type="CapsuleShape2D" id=4]
+radius = 6.0
+height = 14.0
+
+[sub_resource type="Animation" id=5]
+resource_name = "appear"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 15, 13, 14, 11, 10, 0 ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "bite"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 5, 6, 7, 1, 0 ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "die"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 6, 7, 8, 9, 10, 11 ]
+}
+
+[sub_resource type="Animation" id=8]
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 10, 11, 12, 15 ]
+}
+
+[sub_resource type="Animation" id=9]
+length = 1.14286
+loop = true
+step = 0.142857
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.142857, 0.285714, 0.428571, 0.571429, 0.714286, 0.857143, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 1, 0, 3, 4, 3 ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "shoot"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 5, 6, 8, 9, 1, 0 ]
+}
+
+[node name="Magighost" type="Sprite" groups=[
+"enemy",
+]]
+material = SubResource( 1 )
+position = Vector2( 152, 688 )
+texture = ExtResource( 5 )
+vframes = 4
+hframes = 5
+script = ExtResource( 4 )
+max_life = 75.0
+coins_to_spawn = 45
+enemy_name = "Mr. Ghost"
+
+[node name="Shadow" parent="." instance=ExtResource( 1 )]
+material = SubResource( 3 )
+texture = ExtResource( 5 )
+offset = Vector2( 0, 0 )
+vframes = 4
+hframes = 5
+starting_position = Vector2( 2, 2 )
+
+[node name="Area2D" type="Area2D" parent="." groups=[
+"enemy",
+]]
+collision_layer = 4
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 0, 2 )
+shape = SubResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/appear = SubResource( 5 )
+anims/bite = SubResource( 6 )
+anims/die = SubResource( 7 )
+anims/disappear = SubResource( 8 )
+anims/idle = SubResource( 9 )
+anims/shoot = SubResource( 10 )
+
+[node name="HurtTimer" type="Timer" parent="."]
+wait_time = 0.15
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 3.0
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="timeout" from="HurtTimer" to="." method="_on_HurtTimer_timeout"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_AttackTimer_timeout"]

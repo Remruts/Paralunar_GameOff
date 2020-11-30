@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/wub.wav-2a615e5b3f40e611f42b1b81af125525.sample"
+
+[deps]
+
+source_file="res://audio/wub.wav"
+dest_files=[ "res://.import/wub.wav-2a615e5b3f40e611f42b1b81af125525.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,88 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://prefabs/Camera.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/CastleCutscene.gd" type="Script" id=2]
+[ext_resource path="res://CastleCutscene/castle_background_no_lightning.png" type="Texture" id=3]
+[ext_resource path="res://CastleCutscene/castle_background.png" type="Texture" id=4]
+[ext_resource path="res://prefabs/Ghost.tscn" type="PackedScene" id=5]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=12]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 320, 296 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 320, 296 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 1 ), SubResource( 1 ), SubResource( 1 ), SubResource( 2 ), SubResource( 1 ), SubResource( 2 ), SubResource( 1 ), SubResource( 1 ) ],
+"loop": true,
+"name": "lightning",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=4]
+resource_name = "pan_camera"
+length = 6.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 5, 6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 88 ), Vector2( 0, 208 ), Vector2( 0, 208 ) ]
+}
+
+[node name="CastleCutscene" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 3 )
+animation = "lightning"
+frame = 4
+playing = true
+centered = false
+
+[node name="Camera2D" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, 208 )
+limit_right = 320
+limit_bottom = 296
+script = null
+
+[node name="UI" parent="." instance=ExtResource( 12 )]
+
+[node name="LifeContainer" parent="UI" index="0"]
+visible = false
+
+[node name="Gems" parent="UI" index="1"]
+visible = false
+
+[node name="CoinContainer" parent="UI" index="2"]
+visible = false
+
+[node name="GunIcon" parent="UI" index="3"]
+visible = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "pan_camera"
+anims/pan_camera = SubResource( 4 )
+
+[node name="Ghost" parent="." instance=ExtResource( 5 )]
+position = Vector2( 264, 168 )
+
+[node name="Ghost2" parent="." instance=ExtResource( 5 )]
+position = Vector2( 48, 88 )
+
+[node name="Ghost3" parent="." instance=ExtResource( 5 )]
+position = Vector2( 48, 232 )
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+
+[editable path="Camera2D"]
+
+[editable path="UI"]

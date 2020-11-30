@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://sprites/dash_effect.png" type="Texture" id=1]
+[ext_resource path="res://scripts/DashTrail.gd" type="Script" id=2]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="Gradient" id=5]
+offsets = PoolRealArray( 0, 0.765217, 1 )
+colors = PoolColorArray( 0.988235, 0.501961, 0.968627, 1, 1, 0.235294, 0.929412, 0.596078, 1, 0, 0.913725, 0 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=2]
+lifetime_randomness = 0.42
+emission_shape = 2
+emission_box_extents = Vector3( 1, 4, 1 )
+flag_align_y = true
+flag_disable_z = true
+direction = Vector3( 0, 1, 0 )
+spread = 5.0
+flatness = 1.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 5.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 1.0
+scale = 0.08
+scale_random = 0.05
+color_ramp = SubResource( 4 )
+hue_variation = 0.03
+hue_variation_random = 0.86
+
+[node name="DashTrail" type="Particles2D"]
+modulate = Color( 1, 1, 1, 0.705882 )
+material = SubResource( 1 )
+scale = Vector2( 0.5, 0.5 )
+z_index = -1
+amount = 50
+lifetime = 0.1
+explosiveness = 0.2
+local_coords = false
+process_material = SubResource( 2 )
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 0.15
+autostart = true
+[connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]

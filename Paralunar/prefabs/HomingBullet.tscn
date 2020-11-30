@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/HomingBullet.gd" type="Script" id=1]
+[ext_resource path="res://sprites/enemy_bullets.png" type="Texture" id=2]
+[ext_resource path="res://prefabs/BulletEffect1.tscn" type="PackedScene" id=3]
+[ext_resource path="res://prefabs/BulletEffect2.tscn" type="PackedScene" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 4.0
+
+[node name="HomingBullet" type="KinematicBody2D" groups=[
+"EnemyBullet",
+]]
+position = Vector2( 128, 88 )
+collision_layer = 128
+collision_mask = 3
+script = ExtResource( 1 )
+effect1 = ExtResource( 3 )
+effect2 = ExtResource( 4 )
+spawn_sound = ""
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+vframes = 5
+hframes = 2
+frame = 1
+
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 9.0
+one_shot = true
+autostart = true
+
+[node name="FollowTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+[connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]
+[connection signal="timeout" from="FollowTimer" to="." method="_on_FollowTimer_timeout"]

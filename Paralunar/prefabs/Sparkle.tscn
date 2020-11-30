@@ -1,0 +1,83 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://scripts/Sparkle.gd" type="Script" id=2]
+[ext_resource path="res://sprites/sparkle_spritesheet.png" type="Texture" id=3]
+
+[sub_resource type="Shader" id=13]
+code = "shader_type canvas_item;
+
+uniform vec4 new_color : hint_color = vec4(0.13, 0.0, 0.32, 0.75);
+//uniform vec2 offset = vec2(-3.0, 3.0);
+// + vec2(cos(TIME) * UV.x * UV.y, UV.y * UV.x * sin(TIME)) * SCREEN_PIXEL_SIZE * 10.0
+
+void fragment(){
+	vec4 col = textureLod(TEXTURE, UV, 1.0);
+	col.a *= new_color.a;
+	col.rgb *= col.a;
+	col.rgb = new_color.rgb;
+	COLOR = col;
+}"
+custom_defines = ""
+
+[sub_resource type="ShaderMaterial" id=14]
+shader = SubResource( 13 )
+shader_param/new_color = Color( 1, 0, 0.501961, 1 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 3 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 3 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 3 )
+region = Rect2( 16, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 3 )
+region = Rect2( 32, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 3 )
+region = Rect2( 48, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 32, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 3 )
+region = Rect2( 16, 32, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 3 )
+region = Rect2( 32, 32, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 3 )
+region = Rect2( 48, 32, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=15]
+animations = [ {
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), null ],
+"loop": false,
+"name": "sparkle",
+"speed": 25.0
+} ]
+
+[node name="Sparkle" type="AnimatedSprite"]
+material = SubResource( 14 )
+position = Vector2( 56, 80 )
+scale = Vector2( 0.5, 0.5 )
+z_index = 1
+z_as_relative = false
+frames = SubResource( 15 )
+animation = "sparkle"
+script = ExtResource( 2 )
+[connection signal="animation_finished" from="." to="." method="_on_Sparkle_animation_finished"]

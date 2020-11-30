@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://default_env.tres" type="Environment" id=1]
+[ext_resource path="res://scripts/Camera.gd" type="Script" id=2]
+
+[node name="Camera2D" type="Camera2D"]
+current = true
+limit_left = 0
+limit_top = 0
+limit_right = 640
+limit_bottom = 320
+limit_smoothed = true
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = true
+smoothing_speed = 7.0
+drag_margin_left = 0.1
+drag_margin_top = 0.1
+drag_margin_right = 0.1
+drag_margin_bottom = 0.1
+editor_draw_limits = true
+editor_draw_drag_margin = true
+script = ExtResource( 2 )
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 1 )

@@ -1,0 +1,95 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://prefabs/SpriteShadow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://audio/suspense.wav" type="AudioStream" id=2]
+[ext_resource path="res://shaders/enemy_shader.shader" type="Shader" id=3]
+[ext_resource path="res://sprites/creepy_mask.png" type="Texture" id=4]
+[ext_resource path="res://scripts/CreepyMask.gd" type="Script" id=5]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 3 )
+shader_param/blink_color = Color( 1, 0, 0.501961, 1 )
+shader_param/blink_magnitude = 0.0
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform vec4 new_color : hint_color = vec4(0.13, 0.0, 0.32, 0.75);
+//uniform vec2 offset = vec2(-3.0, 3.0);
+// + vec2(cos(TIME) * UV.x * UV.y, UV.y * UV.x * sin(TIME)) * SCREEN_PIXEL_SIZE * 10.0
+
+void fragment(){
+	vec4 col = textureLod(TEXTURE, UV, 1.0);
+	col.a *= new_color.a;
+	col.rgb *= col.a;
+	col.rgb = new_color.rgb;
+	COLOR = col;
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/new_color = Color( 0.13, 0, 0.32, 0.75 )
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 8.0
+
+[sub_resource type="CapsuleShape2D" id=5]
+radius = 8.0
+height = 5.0
+
+[sub_resource type="CircleShape2D" id=6]
+radius = 80.0
+
+[node name="CreepyMask" type="KinematicBody2D"]
+material = SubResource( 1 )
+collision_layer = 0
+script = ExtResource( 5 )
+max_life = 50.0
+damage = 100
+coins_to_spawn = 35
+
+[node name="Sprite" type="Sprite" parent="." groups=[
+"enemy",
+]]
+use_parent_material = true
+texture = ExtResource( 4 )
+
+[node name="Shadow" parent="Sprite" instance=ExtResource( 1 )]
+material = SubResource( 3 )
+texture = ExtResource( 4 )
+offset = Vector2( 0, 0 )
+hframes = 1
+starting_position = Vector2( 2, 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 4 )
+
+[node name="Area2D" type="Area2D" parent="." groups=[
+"enemy",
+]]
+collision_layer = 4
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 0, 1 )
+shape = SubResource( 5 )
+
+[node name="HurtTimer" type="Timer" parent="."]
+wait_time = 0.15
+
+[node name="WanderTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="FollowArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FollowArea"]
+modulate = Color( 0, 0, 0, 0.27451 )
+shape = SubResource( 6 )
+
+[node name="CreepyAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="timeout" from="HurtTimer" to="." method="_on_HurtTimer_timeout"]
+[connection signal="timeout" from="WanderTimer" to="." method="_on_WanderTimer_timeout"]
+[connection signal="body_entered" from="FollowArea" to="." method="_on_FollowArea_body_entered"]
+[connection signal="body_exited" from="FollowArea" to="." method="_on_FollowArea_body_exited"]

@@ -1,0 +1,200 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://scripts/Savepoint.gd" type="Script" id=1]
+[ext_resource path="res://prefabs/SpriteShadow.tscn" type="PackedScene" id=2]
+[ext_resource path="res://fonts/Open Sans/OpenSans-ExtraBoldItalic.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://sprites/save_monolith.png" type="Texture" id=4]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec4 new_color : hint_color = vec4(0.13, 0.0, 0.32, 0.75);
+//uniform vec2 offset = vec2(-3.0, 3.0);
+// + vec2(cos(TIME) * UV.x * UV.y, UV.y * UV.x * sin(TIME)) * SCREEN_PIXEL_SIZE * 10.0
+
+void fragment(){
+	vec4 col = textureLod(TEXTURE, UV, 1.0);
+	col.a *= new_color.a;
+	col.rgb *= col.a;
+	col.rgb = new_color.rgb;
+	COLOR = col;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/new_color = Color( 0.13, 0, 0.32, 0.75 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "activated_floating"
+length = 3.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("SaveMonolith:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5, 3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("SaveMonolith/MonolithGlyph:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.75, 1.5, 2.25, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.658824 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.658824 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "floating"
+length = 3.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("SaveMonolith:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5, 3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("SaveMonolith/MonolithGlyph:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.556863, 0, 0, 1 ) ]
+}
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 7, 13 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 12
+font_data = ExtResource( 3 )
+
+[sub_resource type="Animation" id=7]
+resource_name = "appear"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("SaveTextNode:visible")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("SaveTextNode:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("SaveTextNode:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -19 ), Vector2( 0, -30 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "hidden"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("SaveTextNode:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[node name="Savepoint" type="Area2D"]
+script = ExtResource( 1 )
+
+[node name="SaveMonolith" type="Sprite" parent="."]
+texture = ExtResource( 4 )
+hframes = 3
+
+[node name="Shadow" parent="SaveMonolith" instance=ExtResource( 2 )]
+material = SubResource( 2 )
+texture = ExtResource( 4 )
+offset = Vector2( 0, 0 )
+hframes = 3
+starting_position = Vector2( 2, 2 )
+
+[node name="MonolithGlyph" type="Sprite" parent="SaveMonolith"]
+texture = ExtResource( 4 )
+hframes = 3
+frame = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "floating"
+anims/activated_floating = SubResource( 3 )
+anims/floating = SubResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource( 5 )
+
+[node name="SaveTextNode" type="Node2D" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 0, -30 )
+
+[node name="SaveText" type="RichTextLabel" parent="SaveTextNode"]
+margin_left = -18.0
+margin_top = -10.0
+margin_right = 23.0
+margin_bottom = 6.0
+custom_fonts/normal_font = SubResource( 6 )
+bbcode_enabled = true
+bbcode_text = "saved"
+meta_underlined = false
+text = "saved"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SaveTextAnimator" type="AnimationPlayer" parent="."]
+autoplay = "hidden"
+anims/appear = SubResource( 7 )
+anims/hidden = SubResource( 8 )
+[connection signal="body_entered" from="." to="." method="_on_Savepoint_body_entered"]
