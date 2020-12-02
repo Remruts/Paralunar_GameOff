@@ -42,7 +42,7 @@ func _ready():
     direction = 1.0 if rand_range(0.0, 1.0) > 0.5 else -1.0
 
     var ui = get_tree().current_scene.get_node("UI")
-    self.connect("life_changed", ui, "change_boss_life")
+    var _meh = self.connect("life_changed", ui, "change_boss_life")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

@@ -127,9 +127,12 @@ func hit_stun(time=0.03, scale=0.1):
     hit_stun_timer.start(time)
     
 func lose_lives(num:int=3):
+    if lives <= 0:
+        return
     lives = max(0, lives - num)
-    get_tree().current_scene.get_node("UI").show_hurt_hud()
-    emit_signal("lives_changed")
+    emit_signal("lives_changed")    
+    if get_tree().current_scene.has_node("UI"):        
+        get_tree().current_scene.get_node("UI").show_hurt_hud()
 
 func recover_lives(num:int=1):
     lives = min(lives + num, max_lives)	
@@ -167,12 +170,15 @@ func reset_variables():
 
 func restart():
     game_over_timer.start()
+    cam = null
 
 func game_over_timer_timeout():
-    var err = load_game(current_file)
-    if err == -1:
-        reset_variables()
-        transition_to(current_level)
+    if playing:
+        playing = false
+        var err = load_game(current_file)
+        if err == -1:
+            reset_variables()
+            transition_to(current_level)
 
 func transition_to(path, type="fadeOut", pause_game=true):
     # WIP
@@ -208,8 +214,9 @@ func goto_scene(path):
         cam = null
 
 func move_camera_limits(new_limits:Rect2):
-    cam = get_tree().current_scene.get_node("Camera")
-    current_camera_limits = new_limits
+    if get_tree().current_scene.has_node("Camera"):
+        cam = get_tree().current_scene.get_node("Camera")
+        current_camera_limits = new_limits
 
 #####################################################
 # Save/Load
@@ -335,7 +342,7 @@ func load_game(save_index: int):
 
     if save_dict.has("playtime"):
         time_start = OS.get_unix_time() - save_dict["playtime"]
-
+        
     transition_to(current_level)
     playing = true
     visible_cursor = true and !has_joystick

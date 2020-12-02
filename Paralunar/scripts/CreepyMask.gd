@@ -131,6 +131,7 @@ func _on_FollowArea_body_entered(body):
 func _on_FollowArea_body_exited(body):
 	if body.is_in_group("player"):		
 		wander_timer.start()
+		player = null
 
 func _on_WanderTimer_timeout():
 	if state == "follow":
@@ -138,7 +139,6 @@ func _on_WanderTimer_timeout():
 
 func _on_HurtTimer_timeout():
 	._on_HurtTimer_timeout()
-
 
 func die():
 	if !dead:
