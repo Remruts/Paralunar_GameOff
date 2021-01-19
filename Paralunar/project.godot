@@ -172,7 +172,7 @@ target_right={
 
 [physics]
 
-2d/default_gravity=49
+2d/default_gravity=60000
 
 [rendering]
 
