@@ -24,3 +24,5 @@ The game was made with [Godot 3.2.3](https://godotengine.org/).
 - You may use the game's code, assets, etc. for anything non-commercial. 
 
 - Ask permission if you do decide to use anything here in a commercial product.
+
+- Don't claim the game or any of its assets as your own.
