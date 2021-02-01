@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/paralunar_title.ogg-27ac11a270a692aedaff93864a51f006.oggstr"
+
+[deps]
+
+source_file="res://music/paralunar_title.ogg"
+dest_files=[ "res://.import/paralunar_title.ogg-27ac11a270a692aedaff93864a51f006.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

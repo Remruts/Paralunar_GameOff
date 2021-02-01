@@ -1,11 +1,11 @@
 extends AudioStreamPlayer
 
 var jukebox = {
-    "Title": preload("res://music/paralunar_title.wav"),
+    "Title": preload("res://music/paralunar_title.ogg"),
     "Castle": preload("res://music/waiting.ogg"),
-    "RegularArea": preload("res://music/paralunar_01.wav"),
+    "RegularArea": preload("res://music/paralunar_01.ogg"),
     "OtherArea": preload("res://music/Inkorporeal.ogg"),
-    "FinalBoss": preload("res://music/paralunar_Boss.wav")
+    "FinalBoss": preload("res://music/paralunar_Boss.ogg")
 }
 
 var sfxbox = {
